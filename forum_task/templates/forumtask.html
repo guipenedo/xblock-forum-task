@@ -1,0 +1,102 @@
+<div class="forum_task_block" id="forum_task_block_{{ xblock_id }}" data-state="{{ data }}">
+    <script type="text/template" id="forum_task_tmpl_{{ xblock_id }}">
+        {% if is_course_staff %}
+        <div class="section-header">
+            <h2>Submissões</h2>
+            <% if (is_course_cohorted){ %>
+            <select class="turma-select" id="turmas_filter_{{ xblock_id }}">
+                <% for(let ti = 0; ti < cohorts.length; ti++){let turma = cohorts[ti];%>
+                <% if(turma === "") %>
+                <option value="">– Turma –</option>
+                <% else %>
+                <option value="<%= turma %>"><%= turma %></option>
+                <% } %>
+            </select>
+            <% } %>
+        </div>
+        <% if (submissions.length) { %>
+        <table class="submissions_table">
+            <thead>
+            <tr>
+                <th>Aluno</th>
+                <th>Link</th>
+                <th>Data submissão</th>
+                <th>Validado</th>
+                <th>Validado por</th>
+            </tr>
+            </thead>
+            <% for(let submission of submissions){ %>
+                <% if (submission["user_id"] in names) { %>
+                    <tr>
+                        <td>
+                            <%= names[submission["user_id"]] %>
+                        </td>
+                        <td>
+                            <% if (submission['link']) { %>
+                                <a href="<%= submission['link'] %>" target="_blank">Link</a>
+                            <% } %>
+                        </td>
+                        <td>
+                            <%= submission['timestamp'] %>
+                        </td>
+                        <td class="center">
+                            <% if (submission['validated_by']) { %>
+                                <input data-user_id="<%= submission['user_id'] %>" class="form-check-input validate-button" type="checkbox" value="" checked>
+                            <% } else { %>
+                                <input data-user_id="<%= submission['user_id'] %>" class="form-check-input validate-button" type="checkbox" value="">
+                            <% } %>
+                        </td>
+                        <td>
+                            <%= submission['validated_by'] %>
+                        </td>
+                    </tr>
+                <% } %>
+            <% } %>
+        </table>
+        <% } else {%>
+        <p>Nenhum aluno submeteu ainda.</p>
+        <% } %>
+        <p></p>
+        <h2>Sem submissão</h2>
+        <% if (not_submitted.length) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Aluno</th>
+                    <th>Validar sem submissão</th>
+                </tr>
+            </thead>
+            <% for(let user_id of not_submitted){ %>
+                <% if (user_id in names) { %>
+                    <tr>
+                        <td><%= names[user_id] %></td>
+                        <td class="center">
+                            <input data-user_id="<%= user_id %>" class="form-check-input validate-button"
+                                   type="checkbox" value="">
+                        </td>
+                    </tr>
+                <% } %>
+            <% } %>
+        </table>
+        <% } else {%>
+        <p>Todos os alunos submeteram!</p>
+        <% } %>
+        {% else %}
+        <p><%= prompt %></p>
+
+        <% if (show_form) { %>
+            <div class="input-group flex-nowrap">
+                <input type="text" class="form-control tarefa-link" placeholder="https://forum.treetree2.school/..." aria-label="Forum link"
+                       aria-describedby="addon-wrapping" id="tarefa_link">
+                <button class="btn btn-outline-secondary" id="submit_tarefa" type="button">Enviar</button>
+            </div>
+        <% } %>
+        {% endif %}
+    </script>
+    <div id="forum_task_content_{{ xblock_id }}">Carregando... <i class="fa fa-spin fa-spinner" aria-hidden="true"></i>
+    </div>
+    <section aria-hidden="true" class="modal student-answer-modal" id="view_student_answer_{{ xblock_id }}" tabindex="-1">
+        <div class="inner-wrapper" style="color: black">
+        </div>
+    </section>
+</div>
