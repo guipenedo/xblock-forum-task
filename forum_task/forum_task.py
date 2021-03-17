@@ -184,7 +184,7 @@ class ForumTaskXBlock(XBlock, ScorableXBlockMixin, StudioEditableXBlockMixin):
 
                 names[user_id] = enr.user.username
                 if enr.user.profile.name:
-                    names[user_id] = self.format_name(enr.user.profile.name)
+                    names[user_id] = format_name(enr.user.profile.name)
 
         return Response(json.dumps({
             'submissions': cohort_submissions,
