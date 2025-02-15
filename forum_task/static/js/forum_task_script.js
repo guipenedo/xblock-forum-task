@@ -33,8 +33,8 @@ function ForumTaskXBlock(runtime, element, context) {
             if (!context.is_course_staff) {
                 $('#submit_tarefa').bind('click', function () {
                     let link = $('#tarefa_link').val()
-                    if (!link || !link.startsWith("https://forum.treetree2.school")){
-                        alert("O link tem que começar por https://forum.treetree2.school")
+                    if (!link || !link.startsWith("https://forum.treetree2.school") || !link.startsWith("https://discord.com")){
+                        alert("Link inválido...")
                         return
                     }
                     const handlerUrl = runtime.handlerUrl(element, 'submit_link');
